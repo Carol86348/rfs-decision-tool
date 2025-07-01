@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>再餵食症候群營養決策樹</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1, h2 { color: #003366; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        .section { margin-top: 20px; }
+        .result { font-weight: bold; font-size: 1.2em; color: #cc0000; margin-top: 10px; }
+        .recommendation { margin-top: 20px; padding: 10px; background: #f2f2f2; border-left: 5px solid #003366; }
+    </style>
+</head>
+<body>
+    <h1>再餵食症候群營養決策樹</h1>
+    <p><strong>1. 再餵食症候群 (Refeeding syndrome)</strong> 高危險群包含 BMI &lt; 18.5、主訴吃不好或進食量 &lt; 1000 kcal/day、禁食及 3～6 個月內非計畫性體重減輕 &gt; 10%。若有上述情形，建議進行風險等級篩檢，並依據篩檢結果制定飲食計畫及定期監測相關抽血指標。</p>
+    <p><strong>2.</strong> 請依序輸入身高、體重，並選擇體重變化狀況、進食狀況、飲酒、或藥癮或血中鈣、磷或鎂是否過低？</p>
+    <p><strong>3.</strong> 依風險等級建議每日所需熱量，計算靜脈營養及腸道營養熱量分配。</p>
+
+    <div class="section">
+        <h2>基本資料</h2>
+        身高（cm）<input id="height" type="number">　
+        體重（kg）<input id="weight" type="number">
+        <button onclick="calculateBMI()">計算 BMI</button>
+        <p id="bmiResult">BMI： </p>
+    </div>
+
+    <div class="section">
+        <h2>風險因子評估（BMI / 體重減輕 / 禁食 條件三選一）</h2>
+        <table>
+            <thead><tr><th>A 類</th><th>B 類</th><th>C 類</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" class="groupA bmi" onchange="onlyOne('bmi', this)"> BMI &lt; 18.5</td>
+                    <td><input type="checkbox" class="groupB bmi" onchange="onlyOne('bmi', this)"> BMI &lt; 16</td>
+                    <td><input type="checkbox" class="groupC bmi" onchange="onlyOne('bmi', this)"> BMI &lt; 14</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="groupA wt" onchange="onlyOne('wt', this)"> 體重減輕 &gt; 10%</td>
+                    <td><input type="checkbox" class="groupB wt" onchange="onlyOne('wt', this)"> 體重減輕 &gt; 15%</td>
+                    <td><input type="checkbox" class="groupC wt" onchange="onlyOne('wt', this)"> 體重減輕 &gt; 20%</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="groupA intake" onchange="onlyOne('intake', this)"> 進食量 &lt; 1000 kcal 或禁食 &gt; 5 天</td>
+                    <td><input type="checkbox" class="groupB intake" onchange="onlyOne('intake', this)"> 進食量 &lt; 1000 kcal 或禁食 &gt; 10 天</td>
+                    <td><input type="checkbox" class="groupC intake" onchange="onlyOne('intake', this)"> 禁食 &gt; 15 天</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="groupA"> 酒癮或藥物成癮病史</td>
+                    <td><input type="checkbox" class="groupB"> 低血鉀 / 低血磷 / 低血鎂</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <button onclick="evaluateRisk()">▶ 評估風險等級</button>
+        <p id="riskResult" class="result"></p>
+    </div>
+
+    <div id="recommendation" class="recommendation" style="display:none;"></div>
+
+    <script>
+        function calculateBMI() {
+            const h = parseFloat(document.getElementById('height').value);
+            const w = parseFloat(document.getElementById('weight').value);
+            if (h && w) {
+                const bmi = w / ((h/100)**2);
+                document.getElementById('bmiResult').innerText = 'BMI：' + bmi.toFixed(1);
+            }
+        }
+
+        function onlyOne(category, checkbox) {
+            document.querySelectorAll('input.' + category).forEach(c => {
+                if (c !== checkbox) c.checked = false;
+            });
+        }
+
+        function evaluateRisk() {
+            const countA = document.querySelectorAll('.groupA:checked').length;
+            const countB = document.querySelectorAll('.groupB:checked').length;
+            const countC = document.querySelectorAll('.groupC:checked').length;
+
+            const w = parseFloat(document.getElementById('weight').value) || 50;
+
+            let risk = '';
+            let reco = '';
+
+            if (countC >= 1) {
+                risk = '⚠️ 高度風險';
+                reco = `
+                <strong>熱量建議：</strong><br>
+                第1-3天：5-10 kcal/kg/day（${(w*5).toFixed(0)}-${(w*10).toFixed(0)} kcal）<br>
+                第4-6天：10-20 kcal/kg/day（${(w*10).toFixed(0)}-${(w*20).toFixed(0)} kcal）<br>
+                第7-9天：20-30 kcal/kg/day（${(w*20).toFixed(0)}-${(w*30).toFixed(0)} kcal）<br>
+                第10天：目標熱量（預設 1500 kcal）<br><br>
+                <strong>Thiamine：</strong> 第1-5天每日 200–300 mg<br>
+                <strong>Multivitamin：</strong> 第1-10天每日 4 ml
+                `;
+            } else if (countB >= 1 || countA >= 2) {
+                risk = '⚠️ 中度風險';
+                reco = `
+                <strong>熱量建議：</strong><br>
+                第1-3天：10-15 kcal/kg/day（${(w*10).toFixed(0)}-${(w*15).toFixed(0)} kcal）<br>
+                第4-5天：15-25 kcal/kg/day（${(w*15).toFixed(0)}-${(w*25).toFixed(0)} kcal）<br>
+                第6天：25-30 kcal/kg/day（${(w*25).toFixed(0)}-${(w*30).toFixed(0)} kcal）<br>
+                第7天：目標熱量（預設 1500 kcal）<br><br>
+                <strong>Thiamine：</strong> 第1-3天每日 200–300 mg<br>
+                <strong>Multivitamin：</strong> 第1-10天每日 4 ml
+                `;
+            } else if (countA >= 1) {
+                risk = '⚠️ 低度風險';
+                reco = `
+                <strong>熱量建議：</strong><br>
+                第1-3天：15-25 kcal/kg/day（${(w*15).toFixed(0)}-${(w*25).toFixed(0)} kcal）<br>
+                第4天：30 kcal/kg/day（${(w*30).toFixed(0)} kcal）<br>
+                第5天：目標熱量（預設 1500 kcal）<br><br>
+                <strong>Thiamine：</strong> 第1-3天每日 200–300 mg<br>
+                <strong>Multivitamin：</strong> 第1-10天每日 4 ml
+                `;
+            } else {
+                risk = '尚未符合風險評估條件';
+            }
+
+            document.getElementById('riskResult').innerText = risk;
+            const recodiv = document.getElementById('recommendation');
+            recodiv.innerHTML = reco;
+            recodiv.style.display = reco ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
