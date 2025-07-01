@@ -207,9 +207,9 @@ function updateWarningMessage(riskLevel) {
     const warningDiv = document.getElementById("warningMessage");
     if (!warningDiv) return;
     if (riskLevel === "中度風險") {
-        warningDiv.innerText = "⚠️ 電解質不平衡或急速降低，每 1–2 天減少 50% 熱量攝取，或目標熱量增加 33%。";
+        warningDiv.innerText = "電解質不平衡或急速降低，每 1–2 天減少 50% 熱量攝取，或目標熱量增加 33%。";
     } else if (riskLevel === "高度風險") {
-        warningDiv.innerText = "⚠️ 電解質嚴重偏低或低至危急生命，暫停熱量攝取。";
+        warningDiv.innerText = "電解質嚴重偏低或低至危急生命，暫停熱量攝取。";
     } else {
         warningDiv.innerText = "";
     }
@@ -218,8 +218,8 @@ function updateWarningMessage(riskLevel) {
 <div class="section">
 <h2>營養熱量計算區</h2>
 <p><strong>EN 總熱量：</strong><span id="enTotal">0</span> kcal　
-<strong>PN 總熱量：</strong><span id="pnTotal">0</span> kcal　
-<strong>EN + PN 總熱量：</strong><span id="allTotal">0</span> kcal</p>
+<strong>PN 總熱量：</strong><span id="pnTotal">0</span> kcal</p>
+<p><strong>EN + PN 總熱量：</strong><span id="allTotal">0</span> kcal</p>
 <h3>腸道營養（EN）</h3>
 <table><thead><tr><th>品項</th><th>單位熱量</th><th>輸入數量</th></tr></thead><tbody>
 <tr>
