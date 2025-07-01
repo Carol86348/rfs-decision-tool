@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>再餵食症候群決策輔助工具（完整整合）</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h1 { color: #004080; }
+    .section { margin-top: 30px; padding: 15px; border: 1px solid #ccc; border-radius: 8px; }
+    label, input { display: block; margin-bottom: 10px; }
+    input[type="number"] { width: 100px; }
+    .red { color: red; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 8px; }
+    th { background-color: #f0f0f0; }
+    .out { text-align: right; }
+  </style>
+</head>
+<body>
+  <h1>再餵食症候群決策輔助工具</h1>
+
+  <div class="section">
+    <h2>基本資料</h2>
+    <label>身高（cm）<input type="number" id="height"></label>
+    <label>體重（kg）<input type="number" id="weight"></label>
+    <button onclick="updateBMI()">計算 BMI</button>
+    <p><strong>BMI：</strong> <span id="bmi">--</span></p>
+  </div>
+
+    <div class="section">    <h2>風險因子評估</h2>    <table>      <thead>        <tr>          <th>A 類</th>          <th>B 類</th>          <th>C 類</th>        </tr>      </thead>      <tbody>        <tr>          <td><label><input type="checkbox" class="risk" value="A"> BMI &lt; 18.5</label></td>          <td><label><input type="checkbox" class="risk" value="B"> BMI &lt; 16</label></td>          <td><label><input type="checkbox" class="risk" value="C"> BMI &lt; 14</label></td>        </tr>        <tr>          <td><label><input type="checkbox" class="risk" value="A"> 體重減輕 &gt; 10%</label></td>          <td><label><input type="checkbox" class="risk" value="B"> 體重減輕 &gt; 15%</label></td>          <td><label><input type="checkbox" class="risk" value="C"> 體重減輕 &gt; 20%</label></td>        </tr>        <tr>          <td><label><input type="checkbox" class="risk" value="A"> 進食量 &lt; 1000 kcal 或禁食 &gt; 5 天</label></td>          <td><label><input type="checkbox" class="risk" value="B"> 進食量 &lt; 1000 kcal 或禁食 &gt; 10 天</label></td>          <td><label><input type="checkbox" class="risk" value="C"> 禁食 &gt; 15 天</label></td>        </tr>        <tr>          <td><label><input type="checkbox" class="risk" value="A"> 酒精或藥物成癮病史</label></td>          <td><label><input type="checkbox" class="risk" value="B"> 低血鉀／低血磷／低血鎂</label></td>          <td></td>        </tr>      </tbody>    </table>    <button onclick="evaluateRisk()">➤ 評估風險等級</button>    <div id="riskResult" class="result"></div>  </div> class="result"></div>
+  </div>
+
+  <div class="section">
+    <h2>建議熱量與補充</h2>
+    <p><strong>每日建議熱量：</strong> <span id="kcalRange">--</span></p>
+    <p><strong>Thiamine 建議：</strong> <span id="thiamine">--</span></p>
+    <p><strong>Multivitamin 建議：</strong> <span id="multi">--</span></p>
+    <div id="kcalTable"></div>
+  </div>
+
+  <div class="section">
+    <h2>PN 熱量輸入</h2>
+    <table>
+      <thead><tr><th>品項</th><th>容量</th><th>熱量</th><th>數量</th><th>總熱量</th></tr></thead>
+      <tbody>
+        <tr><td>50%Glucose 4PC#Q6H</td><td>320ml</td><td>544</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='544'></td><td class='out'></td></tr>
+<tr><td>50%Glucose 3PC#Q6H</td><td>240ml</td><td>408</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='408'></td><td class='out'></td></tr>
+<tr><td>50%Glucose 2PC#Q6H</td><td>160ml</td><td>272</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='272'></td><td class='out'></td></tr>
+<tr><td>50%Glucose 1PC#Q6H</td><td>80ml</td><td>136</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='136'></td><td class='out'></td></tr>
+<tr><td>D10W 30ml/hr</td><td>720ml</td><td>245</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='245'></td><td class='out'></td></tr>
+<tr><td>D10W 40ml/hr</td><td>960ml</td><td>326</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='326'></td><td class='out'></td></tr>
+<tr><td>D10W 50ml/hr</td><td>1200ml</td><td>408</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='408'></td><td class='out'></td></tr>
+<tr><td>D10W 60ml/hr</td><td>1440ml</td><td>490</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='490'></td><td class='out'></td></tr>
+<tr><td>Kabiven PI</td><td>1448ml</td><td>1000</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='1000'></td><td class='out'></td></tr>
+<tr><td>Kabiven central</td><td>1477ml</td><td>1600</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='1600'></td><td class='out'></td></tr>
+<tr><td>periolimel</td><td>1500ml</td><td>1050</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='1050'></td><td class='out'></td></tr>
+<tr><td>AA 5% 250ml</td><td>250ml</td><td>50</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='50'></td><td class='out'></td></tr>
+<tr><td>AA 5% 500ml</td><td>500ml</td><td>100</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='100'></td><td class='out'></td></tr>
+<tr><td>AA 7% 250ml</td><td>250ml</td><td>70</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='70'></td><td class='out'></td></tr>
+<tr><td>AA 10% 500ml</td><td>500ml</td><td>142</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='142'></td><td class='out'></td></tr>
+<tr><td>AA 15% 500ml</td><td>500ml</td><td>300</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='300'></td><td class='out'></td></tr>
+<tr><td>fat 20% 100ml</td><td>100ml</td><td>200</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='200'></td><td class='out'></td></tr>
+<tr><td>fat 20% 250ml</td><td>250ml</td><td>500</td><td><input type='number' value='0' onchange='calcTotal()' class='pn' data-kcal='500'></td><td class='out'></td></tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>EN 熱量輸入</h2>
+    <table>
+      <thead><tr><th>品項</th><th>熱量</th><th>數量</th><th>總熱量</th></tr></thead>
+      <tbody>
+        <tr><td>創快復</td><td>300</td><td><input type='number' value='0' onchange='calcTotal()' class='en' data-kcal='300'></td><td class='out'></td></tr>
+<tr><td>新普派</td><td>250</td><td><input type='number' value='0' onchange='calcTotal()' class='en' data-kcal='250'></td><td class='out'></td></tr>
+<tr><td>低油.低鉀配方</td><td>250</td><td><input type='number' value='0' onchange='calcTotal()' class='en' data-kcal='250'></td><td class='out'></td></tr>
+<tr><td>益力壯系列</td><td>250</td><td><input type='number' value='0' onchange='calcTotal()' class='en' data-kcal='250'></td><td class='out'></td></tr>
+<tr><td>益力康</td><td>250</td><td><input type='number' value='0' onchange='calcTotal()' class='en' data-kcal='250'></td><td class='out'></td></tr>
+<tr><td>保惠壯</td><td>250</td><td><input type='number' value='0' onchange='calcTotal()' class='en' data-kcal='250'></td><td class='out'></td></tr>
+<tr><td>益沛佳</td><td>250</td><td><input type='number' value='0' onchange='calcTotal()' class='en' data-kcal='250'></td><td class='out'></td></tr>
+<tr><td>免疫增</td><td>250</td><td><input type='number' value='0' onchange='calcTotal()' class='en' data-kcal='250'></td><td class='out'></td></tr>
+<tr><td>健力體</td><td>250</td><td><input type='number' value='0' onchange='calcTotal()' class='en' data-kcal='250'></td><td class='out'></td></tr>
+<tr><td>安素</td><td>250</td><td><input type='number' value='0' onchange='calcTotal()' class='en' data-kcal='250'></td><td class='out'></td></tr>
+<tr><td>諾沛</td><td>250</td><td><input type='number' value='0' onchange='calcTotal()' class='en' data-kcal='250'></td><td class='out'></td></tr>
+<tr><td>葡勝鈉</td><td>250</td><td><input type='number' value='0' onchange='calcTotal()' class='en' data-kcal='250'></td><td class='out'></td></tr>
+<tr><td>普寧腎</td><td>425</td><td><input type='number' value='0' onchange='calcTotal()' class='en' data-kcal='425'></td><td class='out'></td></tr>
+<tr><td>安素雙卡</td><td>475</td><td><input type='number' value='0' onchange='calcTotal()' class='en' data-kcal='475'></td><td class='out'></td></tr>
+
+      </tbody>
+    </table>
+    <p><strong>總攝取熱量：</strong> <span id="totalKcal">0</span> kcal</p>
+  </div>
+
+  
+
+
+
+<script>
+function updateBMI() {
+  const h = parseFloat(document.getElementById("height").value);
+  const w = parseFloat(document.getElementById("weight").value);
+  if (h && w) {
+    const bmi = w / ((h / 100) ** 2);
+    document.getElementById("bmi").innerText = bmi.toFixed(1);
+
+    // 自動勾選 BMI 對應風險因子
+    document.querySelectorAll(".risk").forEach(c => {
+      const label = c.closest("label")?.textContent || "";
+      if (label.includes("BMI < 18.5") && bmi < 18.5) c.checked = true;
+      if (label.includes("BMI < 16") && bmi < 16) c.checked = true;
+      if (label.includes("BMI < 14") && bmi < 14) c.checked = true;
+    });
+  }
+}
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // 互斥設定：BMI / 體重減輕 / 禁食（只可三擇一）
+    const mutuallyExclusiveGroups = [
+        ["a-bmi", "b-bmi", "c-bmi"],
+        ["a-weight", "b-weight", "c-weight"],
+        ["a-intake", "b-intake", "c-intake"]
+    ];
+
+    mutuallyExclusiveGroups.forEach(group => {
+        group.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener("change", function () {
+                    if (this.checked) {
+                        group.forEach(otherId => {
+                            if (otherId !== id) {
+                                const other = document.getElementById(otherId);
+                                if (other) other.checked = false;
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    document.getElementById("evaluateRisk").addEventListener("click", function () {
+        const aChecks = document.querySelectorAll(".a-group:checked").length;
+        const bChecks = document.querySelectorAll(".b-group:checked").length;
+        const cChecks = document.querySelectorAll(".c-group:checked").length;
+        let resultText = "";
+
+        if (cChecks >= 1) {
+            resultText = "<span class='red'>高風險</span>";
+        } else if (bChecks >= 1 || aChecks >= 2) {
+            resultText = "<span class='red'>中風險</span>";
+        } else if (aChecks >= 1) {
+            resultText = "<span class='red'>低風險</span>";
+        } else {
+            resultText = "尚未符合風險評估條件";
+        }
+
+        document.getElementById("riskResult").innerHTML = resultText;
+    });
+});
+</script>
+</body>
+
+</html>
