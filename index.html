@@ -306,43 +306,43 @@ function updateWarningMessage(riskLevel) {
 <h3>靜脈營養（PN）：建議D4後再給糖以外品項</h3>
 <table><thead><tr><th>品項</th><th>單位熱量</th><th>輸入數量</th></tr></thead><tbody>
 <tr>
-<td>50%Glucose 4PC#Q6H</td>
+<td>50%Glucose 4PC#Q6H/day</td>
 <td>544</td>
 <td><div class="input-group"><button onclick="adjustInput('PN_0', -1)">−</button><input id="PN_0_input" min="0" onchange="calcInputNutrition()" step="1" style="width:60px;" type="number" value="0"/><button onclick="adjustInput('PN_0', 1)">＋</button></div></td>
 </tr>
 <tr>
-<td>50%Glucose 3PC#Q6H</td>
+<td>50%Glucose 3PC#Q6H/day</td>
 <td>408</td>
 <td><div class="input-group"><button onclick="adjustInput('PN_1', -1)">−</button><input id="PN_1_input" min="0" onchange="calcInputNutrition()" step="1" style="width:60px;" type="number" value="0"/><button onclick="adjustInput('PN_1', 1)">＋</button></div></td>
 </tr>
 <tr>
-<td>50%Glucose 2PC#Q6H</td>
+<td>50%Glucose 2PC#Q6H/day</td>
 <td>272</td>
 <td><div class="input-group"><button onclick="adjustInput('PN_2', -1)">−</button><input id="PN_2_input" min="0" onchange="calcInputNutrition()" step="1" style="width:60px;" type="number" value="0"/><button onclick="adjustInput('PN_2', 1)">＋</button></div></td>
 </tr>
 <tr>
-<td>50%Glucose 1PC#Q6H</td>
+<td>50%Glucose 1PC#Q6H/day</td>
 <td>136</td>
 <td><div class="input-group"><button onclick="adjustInput('PN_3', -1)">−</button><input id="PN_3_input" min="0" onchange="calcInputNutrition()" step="1" style="width:60px;" type="number" value="0"/><button onclick="adjustInput('PN_3', 1)">＋</button></div></td>
 </tr>
 <tr>
-<td>D10W 30ml/hr</td>
-<td>245</td>
+<td>D10W 40ml*24hr</td>
+<td>326</td>
 <td><div class="input-group"><button onclick="adjustInput('PN_4', -1)">−</button><input id="PN_4_input" min="0" onchange="calcInputNutrition()" step="1" style="width:60px;" type="number" value="0"/><button onclick="adjustInput('PN_4', 1)">＋</button></div></td>
 </tr>
 <tr>
-<td>D10W 40ml/hr</td>
-<td>326</td>
+<td>D10W 60ml*24hr</td>
+<td>490</td>
 <td><div class="input-group"><button onclick="adjustInput('PN_5', -1)">−</button><input id="PN_5_input" min="0" onchange="calcInputNutrition()" step="1" style="width:60px;" type="number" value="0"/><button onclick="adjustInput('PN_5', 1)">＋</button></div></td>
 </tr>
 <tr>
-<td>D10W 50ml/hr</td>
-<td>408</td>
+<td>D10W 500ml/day</td>
+<td>170</td>
 <td><div class="input-group"><button onclick="adjustInput('PN_6', -1)">−</button><input id="PN_6_input" min="0" onchange="calcInputNutrition()" step="1" style="width:60px;" type="number" value="0"/><button onclick="adjustInput('PN_6', 1)">＋</button></div></td>
 </tr>
 <tr>
-<td>D10W 60ml/hr</td>
-<td>490</td>
+<td>D5W/D5S 500ml/day</td>
+<td>85</td>
 <td><div class="input-group"><button onclick="adjustInput('PN_7', -1)">−</button><input id="PN_7_input" min="0" onchange="calcInputNutrition()" step="1" style="width:60px;" type="number" value="0"/><button onclick="adjustInput('PN_7', 1)">＋</button></div></td>
 </tr>
 <tr>
@@ -398,7 +398,7 @@ function updateWarningMessage(riskLevel) {
 </tbody></table>
 </div>
 <script>
-const kcalMap = {'EN': {'EN_0': 300, 'EN_1': 250, 'EN_2': 250, 'EN_3': 250, 'EN_4': 250, 'EN_5': 250, 'EN_6': 350, 'EN_7': 250, 'EN_8': 250, 'EN_9': 250, 'EN_10': 250, 'EN_11': 250, 'EN_12': 425, 'EN_13': 475, 'EN_14': 10.2, 'EN_15': 17}, 'PN': {'PN_0': 544, 'PN_1': 408, 'PN_2': 272, 'PN_3': 136, 'PN_4': 245, 'PN_5': 326, 'PN_6': 408, 'PN_7': 490, 'PN_8': 1000, 'PN_9': 1600, 'PN_10': 1050, 'PN_11': 50, 'PN_12': 100, 'PN_13': 70, 'PN_14': 142, 'PN_15': 300, 'PN_16': 200, 'PN_17': 500}}
+const kcalMap = {'EN': {'EN_0': 300, 'EN_1': 250, 'EN_2': 250, 'EN_3': 250, 'EN_4': 250, 'EN_5': 250, 'EN_6': 350, 'EN_7': 250, 'EN_8': 250, 'EN_9': 250, 'EN_10': 250, 'EN_11': 250, 'EN_12': 425, 'EN_13': 475, 'EN_14': 10.2, 'EN_15': 17}, 'PN': {'PN_0': 544, 'PN_1': 408, 'PN_2': 272, 'PN_3': 136, 'PN_4': 326, 'PN_5': 490, 'PN_6': 170, 'PN_7': 85, 'PN_8': 1000, 'PN_9': 1600, 'PN_10': 1050, 'PN_11': 50, 'PN_12': 100, 'PN_13': 70, 'PN_14': 142, 'PN_15': 300, 'PN_16': 200, 'PN_17': 500}}
 
 function adjustInput(id, delta) {
     const input = document.getElementById(id + "_input");
